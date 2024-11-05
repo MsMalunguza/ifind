@@ -1,155 +1,94 @@
-/*import React,{useState} from 'react';
-const SignUp = () => {
-    const [formData, setFormaData] = useState ({
-        FirstName: '',
-        LastName: '',
-        Email: '',
-        PassWord: '',
-        confirmPassword: '',
-        isAgent: false
-    });
-    const handleChange = (e) => {
-        const {name, value, type, checked} = e.target;
-        setFormaData({
-            ...formData,
-            [name]: type === 'checkbox'? checked : value
-        });
+import React from 'react';
+import { useForm } from 'react-hook-form';
+
+function SignUpForm() {
+    // default values and validation options
+    const { register, handleSubmit,watch, formState: { errors } } = useForm();
+
+    //  form submission
+    const onSubmit = (data) => {
+        console.log("Form data:", data);
+        alert("Form submitted!");
     };
-    const handleSubmit = (e) =>{
-        e.preventDefault();
-        console.log('Form submitted:',formData);
-    };
-    
-  return(
-    <div className="min-h-screen flex items-centre justify-center bg-gray-100">
-        <div class name="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-            <div className="flex justify-center mb-6">
-            <img src="/path-to-logo.png" alt="Logo" className="w-20"/>
+
+    return (
+        <div className="flex items-center justify-center h-screen bg-gray-100">
+            <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+                <h1 className="text-2xl font-bold text-center mb-2">Sign Up for iFind</h1>
+                <p className="text-center text-gray-500 mb-6">
+                    Discover the perfect accommodation for your next stay
+                </p>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                    <div className="flex space-x-4">
+                        <input
+                            {...register("firstName", { required: "First name is required" })}
+                            placeholder="First Name"
+                            className="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        />
+                        {errors.firstName && <span className="text-red-500">{errors.firstName.message}</span>}
+                        <input
+                            {...register("lastName", { required: "Last name is required" })}
+                            placeholder="Last Name"
+                            className="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        />
+                        {errors.lastName && <span className="text-red-500">{errors.lastName.message}</span>}
+                    </div>
+                    <input
+                        {...register("email", {
+                            required: "Email is required",
+                            pattern: { value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/, message: "Invalid email" }
+                        })}
+                        placeholder="Email address"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                    />
+                    {errors.email && <span className="text-red-500">{errors.email.message}</span>}
+                    
+                    <input
+                        {...register("password", { required: "Password is required", minLength: { value: 6, message: "Password must be at least 6 characters" } })}
+                        type="password"
+                        placeholder="Password"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                    />
+                    {errors.password && <span className="text-red-500">{errors.password.message}</span>}
+                    
+                    <input
+                        {...register("confirmPassword", {
+                            required: "Please confirm your password",
+                            validate: (value) => value === watch("password") || "Passwords do not match"
+                        })}
+                        type="password"
+                        placeholder="Confirm password"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                    />
+                    {errors.confirmPassword && <span className="text-red-500">{errors.confirmPassword.message}</span>}
+                    
+                    <div className="flex items-center">
+                        <input
+                            type="checkbox"
+                            {...register("isAgent")}
+                            className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                        />
+                        <label className="ml-2 text-gray-700">
+                            Register as Agent/Property owner
+                        </label>
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                        Submit
+                    </button>
+                </form>
+                <p className="text-center text-gray-500 mt-4">Already have an account?</p>
+                <button
+                    onClick={() => alert('Redirect to sign-in page')}
+                    className="w-full py-2 mt-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-100 focus:outline-none"
+                >
+                    Sign In
+                </button>
             </div>
-            <h2 className="text-2xl font-semibold text-center text-gray-800mb-2">
-                Sign Up for iFinf
-            </h2>
-            <p className="text-gray-600 text-center mb-8">
-                Discover the perfect accommodation for your next stay
-            </p>
-            <form onSubmit={handleSubmit}
-            className="space-y-4"
         </div>
-    </div>
-  )
-        
+    );
+}
 
-        
-    
-};
-export default SignUp;*/
-import React, { useState } from 'react';
-
-const SignUp = () => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    isAgent: false
-  });
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <div className="flex justify-center mb-6">
-          <img src="/path-to-logo.png" alt="Logo" className="w-20" />
-        </div>
-        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-2">
-          Sign Up for iFind
-        </h2>
-        <p className="text-gray-600 text-center mb-8">
-          discover the perfect accommodation for your next stay
-        </p>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <input
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-              value={formData.firstName}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email address"
-            value={formData.email}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Confirm password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className="border border-gray-300 rounded-lg p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <label className="flex items-center">
-            <input
-              type="checkbox"
-              name="isAgent"
-              checked={formData.isAgent}
-              onChange={handleChange}
-              className="h-4 w-4 text-blue-500 focus:ring-blue-500 border-gray-300 rounded"
-            />
-            <span className="ml-2 text-gray-700">Register as Agent/Property owner</span>
-          </label>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-200"
-          >
-            Submit
-          </button>
-        </form>
-        <div className="text-center mt-6">
-          <p className="text-gray-600">Already have an account?</p>
-          <button className="mt-2 w-full p-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
-            Sign In
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default SignUp;
-
+export default SignUpForm;
